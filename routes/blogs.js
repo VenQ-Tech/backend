@@ -1,0 +1,6 @@
+const express = require("express");
+const router = express.Router();
+const blogController=require('../controllers/blogController');
+router.get("/all", blogController.getAllBlogs);
+router.get("/single/:id", blogController.getSingleBlog);
+module.exports = router;
