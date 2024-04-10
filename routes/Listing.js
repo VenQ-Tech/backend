@@ -8,7 +8,7 @@ const {verifyAdmin,verifyUser}  = require('../middleware/verifyJWT') // Ensure t
 
 router.get('/', async (req, res) => {
   try {
-    const listings = await Listing.find({ $or:[{islive:1},{islive:2}]}).sort({islive:1,_id:1});
+    const listings = await Listing.find({ $or:[{islive:1},{islive:2},{islive:3}]}).sort({islive:1,_id:1});
     // console.log('Fetched listings:', listings); // Add this line to log the fetched listings
     res.json(listings);
   } catch (error) {
