@@ -28,8 +28,8 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 
 const razorpay = new Razorpay({
-  key_id: "rzp_test_itc2N0mSqRXSwE",
-  key_secret: "YZbKNUpyiZBsNuFZXs0haM66",
+  key_id: "rzp_live_gHZIY3vAzSxfGR",
+  key_secret: "78lMVpG9gwiuTOD4C9zLDYAV",
 });
 console.log(process.env.NODE_ENV);
 connectDB();
@@ -153,7 +153,7 @@ app.post("/payment/paymentVerification", async (req, res) => {
   const body_data = razorpay_order_id + "|" + razorpay_payment_id;
   try {
     const expect = crypto
-      .createHmac("sha256", "YZbKNUpyiZBsNuFZXs0haM66")
+      .createHmac("sha256", "78lMVpG9gwiuTOD4C9zLDYAV")
       .update(body_data)
       .digest("hex");
 
@@ -186,7 +186,7 @@ app.post("/payment/createTransfer", async (req, res) => {
       transfers: [
         {
           account: "acc_NzJ7ixN968wfiB",
-          amount: Number(amount) * 80,
+          amount: Number(amount) * 86.3,
           currency: "INR",
           notes: {
             name: "Gaurav Kumar",
@@ -195,8 +195,8 @@ app.post("/payment/createTransfer", async (req, res) => {
         },
       ],
     });
-    res.json({ transfer });
     res.redirect(`https://www.venq.in/success`);
+    res.json({ transfer });
   } catch (error) {
     console.error("Error creating transfer:", error);
     res.status(500).json({ error: "Failed to create transfer" });
