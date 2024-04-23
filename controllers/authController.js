@@ -13,18 +13,11 @@ const transporter = nodemailer.createTransport({
     pass: process.env.GMAIL_PASS
   }
 })
-
-
 const signUp = async (req, res) => {
   const { name, email, password,phone } = req.body;
-
-  // Confirm data
   if (!email || !password || !name || !phone) {
     return res.status(400).json({ message: 'All fields are required' });
   }
-
-
-  // Check for duplicates
 
 
   const duplicate = await users.findOne({ email }).lean().exec();

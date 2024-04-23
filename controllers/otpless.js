@@ -1,3 +1,4 @@
+
 const { UserDetail } = require("otpless-node-js-auth-sdk");
 const customers = require("../model/Customer");
 const token = "..."; // Replace with your token
