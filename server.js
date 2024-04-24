@@ -1,4 +1,4 @@
-require("dotenv").config();
+
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -22,7 +22,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-
+require('dotenv').config();
 // -------------------------------
 const PORT = process.env.PORT || 4000;
 const app = express();
