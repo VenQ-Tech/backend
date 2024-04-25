@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -22,14 +21,14 @@ const fs = require("fs");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-require('dotenv').config();
+require("dotenv").config();
 // -------------------------------
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY,
-  key_secret: process.env.RAZORPAY_SECRET,
+  key_id: "rzp_live_gHZIY3vAzSxfGR",
+  key_secret: "78lMVpG9gwiuTOD4C9zLDYAV",
 });
 console.log(process.env.NODE_ENV);
 connectDB();
@@ -153,7 +152,7 @@ app.post("/payment/paymentVerification", async (req, res) => {
   const body_data = razorpay_order_id + "|" + razorpay_payment_id;
   try {
     const expect = crypto
-      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .createHmac("sha256", "78lMVpG9gwiuTOD4C9zLDYAV")
       .update(body_data)
       .digest("hex");
 
@@ -185,7 +184,7 @@ app.post("/payment/createTransfer", async (req, res) => {
     const transfer = await razorpay.payments.transfer(paymentId, {
       transfers: [
         {
-          account: process.env.RAZORPAY_ACCOUNT,
+          account: "acc_NzJ7ixN968wfiB",
           amount: Number(amount) * 86.3,
           currency: "INR",
           notes: {
