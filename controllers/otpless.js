@@ -1,4 +1,3 @@
-
 const { UserDetail } = require("otpless-node-js-auth-sdk");
 const customers = require("../model/Customer");
 const token = "..."; // Replace with your token
@@ -159,16 +158,25 @@ const verifyOtp = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const result = await customers.create(req.body);
-    if (result) {
-      console.log("saved in db ");
-      // console.log(result);
+    console.log(req.body)
+    const duplicate = await customers.findOne({ "email": req.body.email, "phone": req.body.phone }).lean().exec();
+    console.log(duplicate)
+    if (!duplicate) {
+      const result = await customers.create(req.body);
+      console.log("saved data-->", result)
+      if (result) {
+        console.log("saved in db ");
+        return res
+          .status(201)
+          .json({ message: "all user details saved", userinfo: result, created: true });
+      }
+    } else {
       return res
         .status(201)
-        .json({ message: "all user details saved", userinfo: result });
+        .json({ message: "User already with this Email and phone number", created: false, userAvailable: true, userinfo: duplicate });
     }
   } catch (error) {
-    console.log("error in making db change");
+    console.log("error in making db change", error);
   }
 };
 

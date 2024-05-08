@@ -10,6 +10,7 @@ const investmentRoute = require("./routes/investmentRoute");
 const phonepeRoute = require("./routes/phonepeRoute");
 const surepassRoute = require("./routes/surepass");
 const blogsRoute = require("./routes/blogs");
+const purchasedRoute = require("./routes/purchasedRoute");
 const kycRoute = require("./routes/kyc");
 const { OrderModel } = require("./model/Ordermodels");
 // image haxdling--------------------------------
@@ -28,6 +29,8 @@ const app = express();
 
 const razorpay = new Razorpay({
   key_id: "rzp_live_gHZIY3vAzSxfGR",
+  // key_id: "rzp_test_qhajW6qJ3G4guZ",
+  // key_secret: "DGr7QRTZVxpDZWTFP9HtJWCF",
   key_secret: "78lMVpG9gwiuTOD4C9zLDYAV",
 });
 console.log(process.env.NODE_ENV);
@@ -59,6 +62,7 @@ app.use("/otpless", otplessRoute);
 app.use("/auth", require("./routes/authRouter"));
 app.use("/phonepe", phonepeRoute);
 app.use("/investment", investmentRoute);
+app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
 app.use("/blogs", blogsRoute);
 app.use("/kyc", kycRoute);
@@ -167,10 +171,10 @@ app.post("/payment/paymentVerification", async (req, res) => {
         existingOrder.razorpay_order_id = razorpay_order_id;
         await existingOrder.save();
       }
-      res.redirect(`https://www.venq.in/success`);
+      res.redirect(`https://venq.in/success`);
       return;
     } else {
-      res.redirect("https://www.venq.in/failedpayment");
+      res.redirect("https://venq.in/failedpayment");
       return;
     }
   } catch (error) {
@@ -188,13 +192,13 @@ app.post("/payment/createTransfer", async (req, res) => {
           amount: Number(amount) * 86.3,
           currency: "INR",
           notes: {
-            name: "Gaurav Kumar",
-            roll_no: "IEC2011025",
+            name: notes.name,
+            propertyName: notes.propertyName,
           },
         },
       ],
     });
-    res.redirect(`https://www.venq.in/success`);
+
     res.json({ transfer });
   } catch (error) {
     console.error("Error creating transfer:", error);
