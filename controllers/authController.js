@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+dotenv.config();
 const Customer = require("../model/Customer");
 // const read=require('../read')
-dotenv.config();
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {

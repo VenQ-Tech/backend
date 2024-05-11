@@ -1,8 +1,9 @@
 const React = require("react");
 const express = require("express");
 const router = express.Router();
+const dotenv = require("dotenv");
+dotenv.config();
 const nodemailer = require("nodemailer");
-
 const fs = require("fs");
 const html_pdf = require("html-pdf");
 const ReactDOMServer = require("react-dom/server");
@@ -10,13 +11,13 @@ const EmailContent = require("./EmailContent.jsx");
 const path = require("path");
 
 const mailTransport = nodemailer.createTransport({
-  service: "godaddy", // Use "godaddy" for GoDaddy
+  
   host: "smtpout.secureserver.net",
-  secureConnection: true, // Use SSL/TLS encryption
+  secureConnection: true, 
   port: 465,
   auth: {
-    user: "investment@venq.in",
-    pass: "Fractional@123",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
