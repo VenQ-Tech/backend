@@ -1,65 +1,28 @@
-// const mongoose = require('mongoose')
-// const customerSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//
-//     trim: true
-//   },
-//   email: {
-//     type: String,
-//     unique: true,
-//
-//     trim: true
-//   },
-//   password: {
-//     type: String,
-//
-//     minlength: 6
-//   },
-//   otp: {
-//     type: String,
-//
-//     minlength: 6
-//   },
-//   isVerified: {
-//     type: Boolean,
-//     default: false
-//   },
-//   isLoggedIn: {
-//     type: Boolean,
-//     default: false
-//   }
-
-// })
-
-
 // module.exports = mongoose.model('user', customerSchema);
 
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     unique: true,
-    trim: true
+    trim: true,
   },
-  phone:{
-    type:String
+  phone: {
+    type: String,
   },
-  isAdmin :{
+  isAdmin: {
     type: Boolean,
-    default: false
- },
-  isVerified :{
+    default: false,
+  },
+  isVerified: {
     type: Number,
-    default: 0
- },
-
+    default: 0,
+  },
 });
 
-module.exports = mongoose.model('customer', customerSchema);
+module.exports = mongoose.model("Customer", customerSchema);

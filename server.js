@@ -10,6 +10,8 @@ const investmentRoute = require("./routes/investmentRoute");
 const phonepeRoute = require("./routes/phonepeRoute");
 const surepassRoute = require("./routes/surepass");
 const blogsRoute = require("./routes/blogs");
+const mailRoute = require("./routes/mailRoute");
+
 const purchasedRoute = require("./routes/purchasedRoute");
 const kycRoute = require("./routes/kyc");
 const { OrderModel } = require("./model/Ordermodels");
@@ -65,6 +67,7 @@ app.use("/investment", investmentRoute);
 app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
 app.use("/blogs", blogsRoute);
+app.use("/sendmail", mailRoute);
 app.use("/kyc", kycRoute);
 app.use(express.static("public"));
 // Use the listingRoute for handling the '/listing' route

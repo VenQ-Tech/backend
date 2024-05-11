@@ -4,7 +4,7 @@ app.use(express.json());
 // Body parsing middleware
 const router = express.Router();
 const mongoose = require("mongoose");
-
+const Customer = require("../model/Customer");
 const Purchased = require("../model/Purchased");
 // const customerController = require("../controllers/investmentController");
 router.post("/:customerId", async (req, res) => {
@@ -56,6 +56,16 @@ router.get("/:customerId/getDetails", async (req, res) => {
   } catch (error) {
     console.error("Error retrieving investments:", error);
     res.status(500).json({ error: "Failed to retrieve investments" });
+  }
+});
+router.get("/all", async (req, res) => {
+  try {
+    // Fetch purchased data
+    const purchasedData = await Purchased.find().populate("customerId");
+    res.json(purchasedData);
+  } catch (error) {
+    console.error("Error fetching purchased data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
