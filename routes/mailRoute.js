@@ -11,9 +11,8 @@ const EmailContent = require("./EmailContent.jsx");
 const path = require("path");
 
 const mailTransport = nodemailer.createTransport({
-  
   host: "smtpout.secureserver.net",
-  secureConnection: true, 
+  secureConnection: true,
   port: 465,
   auth: {
     user: process.env.EMAIL_USER,
@@ -41,13 +40,21 @@ router.post("/", async (req, res) => {
     .replace(/{{ paymentAmount }}/g, paymentAmount)
     .replace(/{{ numberOfUnits }}/g, numberOfUnits);
   const pdfBuffer = await new Promise((resolve, reject) => {
-    html_pdf.create(html, {}).toBuffer((err, buffer) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(buffer);
-      }
-    });
+    html_pdf
+      .create(html, {
+        childProcessOptions: {
+          env: {
+            OPENSSL_CONF: "/dev/null",
+          },
+        },
+      })
+      .toBuffer((err, buffer) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(buffer);
+        }
+      });
   });
   const emailHtml = ReactDOMServer.renderToStaticMarkup(
     React.createElement(EmailContent, {
