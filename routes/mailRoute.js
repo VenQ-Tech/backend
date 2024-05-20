@@ -68,7 +68,7 @@ router.post("/", async (req, res) => {
   const mailOptions = {
     from: "investment@venq.in",
     to: investorEmail,
-    subject: "Confirmation of Payment Received",
+    subject: "Confirmation of Payment Received-VENQ",
     html: `
         <!DOCTYPE html>
         <html lang="en">

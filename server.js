@@ -31,8 +31,6 @@ const app = express();
 
 const razorpay = new Razorpay({
   key_id: "rzp_live_gHZIY3vAzSxfGR",
-  // key_id: "rzp_test_qhajW6qJ3G4guZ",
-  // key_secret: "DGr7QRTZVxpDZWTFP9HtJWCF",
   key_secret: "78lMVpG9gwiuTOD4C9zLDYAV",
 });
 console.log(process.env.NODE_ENV);
@@ -70,7 +68,6 @@ app.use("/blogs", blogsRoute);
 app.use("/sendmail", mailRoute);
 app.use("/kyc", kycRoute);
 app.use(express.static("public"));
-// Use the listingRoute for handling the '/listing' route
 app.use("/listing", listingRoute);
 
 // Upload photo from device

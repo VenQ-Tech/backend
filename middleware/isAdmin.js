@@ -1,6 +1,6 @@
 
 const isAdmin = (req, res, next) => {
-    // Assuming you have a user object attached to the request (e.g., after authentication)
+   
     const { isAdmin } = req.user;
   
     if (!isAdmin) {
