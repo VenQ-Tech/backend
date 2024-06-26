@@ -24,6 +24,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const Purchased = require("./model/Purchased");
 require("dotenv").config();
 // -------------------------------
 const PORT = process.env.PORT || 4000;
@@ -37,7 +38,6 @@ console.log(process.env.NODE_ENV);
 connectDB();
 app.use(cors());
 
-//cloudinary setup
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -52,7 +52,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -62,7 +61,7 @@ app.use("/otpless", otplessRoute);
 app.use("/auth", require("./routes/authRouter"));
 app.use("/phonepe", phonepeRoute);
 app.use("/investment", investmentRoute);
-app.use("/purchased", purchasedRoute);
+app.use("/purchased", Purchased);
 app.use("/surepass", surepassRoute);
 app.use("/blogs", blogsRoute);
 app.use("/sendmail", mailRoute);
@@ -131,7 +130,7 @@ app.get("/download/:url", (req, res) => {
 app.post("/payment/checkout", async (req, res) => {
   const { name, amount } = req.body;
   try {
-    const order = await razorpay.orders.create({
+    const order = await razorpay.create({
       amount: Number(amount) * 100,
       currency: "INR",
     });

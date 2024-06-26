@@ -8,7 +8,6 @@ const Customer = require("../model/Customer");
 const Purchased = require("../model/Purchased");
 // const customerController = require("../controllers/investmentController");
 router.post("/:customerId", async (req, res) => {
-  console.log(req, "req data");
   const customerId = req.params.customerId;
   const { propertyName, amount, quantity } = req.body;
   if (!mongoose.Types.ObjectId.isValid(customerId)) {
