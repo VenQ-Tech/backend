@@ -61,7 +61,7 @@ app.use("/otpless", otplessRoute);
 app.use("/auth", require("./routes/authRouter"));
 app.use("/phonepe", phonepeRoute);
 app.use("/investment", investmentRoute);
-app.use("/purchased", Purchased);
+app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
 app.use("/blogs", blogsRoute);
 app.use("/sendmail", mailRoute);
