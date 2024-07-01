@@ -130,7 +130,7 @@ app.get("/download/:url", (req, res) => {
 app.post("/payment/checkout", async (req, res) => {
   const { name, amount } = req.body;
   try {
-    const order = await razorpay.create({
+    const order = await razorpay.orders.create({
       amount: Number(amount) * 100,
       currency: "INR",
     });

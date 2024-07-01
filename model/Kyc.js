@@ -40,6 +40,10 @@ const kycSchema = new mongoose.Schema({
   ifsc_code: {
     type: String,
   },
+  mailSent: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("KYC", kycSchema);

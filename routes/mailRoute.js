@@ -91,13 +91,22 @@ router.post("/", async (req, res) => {
   };
   mailTransport
     .sendMail(mailOptions)
+    // .then(() => {
+    //   console.log("Email sent successfully");
+    //   res.status(200).send("Email sent successfully");
+    // })
+    // .catch((err) => {
+    //   console.log("Failed to send email");
+    //   res.status(500).send("Something went wrong");
+    //   console.error(err);
+    // });
     .then(() => {
       console.log("Email sent successfully");
-      res.status(200).send("Email sent successfully");
+      res.status(200).json({ message: "Email sent successfully" });
     })
     .catch((err) => {
       console.log("Failed to send email");
-      res.status(500).send("Something went wrong");
+      res.status(500).json({ error: "Something went wrong" });
       console.error(err);
     });
 });
