@@ -39,9 +39,25 @@ router.post("/", async (req, res) => {
     .replace(/{{ propertyName }}/g, propertyName)
     .replace(/{{ paymentAmount }}/g, paymentAmount)
     .replace(/{{ numberOfUnits }}/g, numberOfUnits);
+  const pdfOptions = {
+    format: "A4",
+    border: {
+      top: "60px",
+      right: "60px",
+      bottom: "60px",
+      left: "60px",
+    },
+    footer: {
+      height: "28mm",
+      contents: {
+        default:
+          '<span style="color: #444; font-size: 10px;">{{page}}</span>/<span>{{pages}}</span>',
+      },
+    },
+  };
   const pdfBuffer = await new Promise((resolve, reject) => {
     html_pdf
-      .create(html, {
+      .create(html,  {
         childProcessOptions: {
           env: {
             OPENSSL_CONF: "/dev/null",
