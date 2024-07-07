@@ -33,6 +33,8 @@ const app = express();
 const razorpay = new Razorpay({
   key_id: "rzp_live_gHZIY3vAzSxfGR",
   key_secret: "78lMVpG9gwiuTOD4C9zLDYAV",
+  // key_id: "rzp_test_qhajW6qJ3G4guZ",
+  // key_secret: "DGr7QRTZVxpDZWTFP9HtJWCF",
 });
 console.log(process.env.NODE_ENV);
 connectDB();
@@ -180,24 +182,33 @@ app.post("/payment/paymentVerification", async (req, res) => {
     console.log(error);
   }
 });
+
 app.post("/payment/createTransfer", async (req, res) => {
   try {
     const { amount, paymentId, recipientAccountId, notes } = req.body;
 
-    const transfer = await razorpay.payments.transfer(paymentId, {
+    const transferOptions = {
       transfers: [
         {
-          account: "acc_NzJ7ixN968wfiB",
-          amount: Number(amount) * 86.3,
+          account: recipientAccountId, // Use recipientAccountId from the request
+          amount: Math.round(Number(amount) * 86.3), // Ensure the amount is a valid number and converted to paise if needed
           currency: "INR",
           notes: {
             name: notes.name,
             propertyName: notes.propertyName,
           },
+          // Assuming new required parameters
+          purpose: "payout",
+          on_hold: 0, // Assuming a new parameter if the API requires it
         },
       ],
-    });
+    };
 
+    const transfer = await razorpay.payments.transfer(
+      paymentId,
+      transferOptions
+    );
+    console.log("Transfer created successfully:", transfer);
     res.json({ transfer });
   } catch (error) {
     console.error("Error creating transfer:", error);

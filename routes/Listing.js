@@ -36,6 +36,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 router.get("/byName/:name", async (req, res) => {
   try {
     const propertyName = req.params.name;
