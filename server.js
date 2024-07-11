@@ -171,15 +171,20 @@ app.post("/payment/paymentVerification", async (req, res) => {
         existingOrder.razorpay_payment_id = razorpay_payment_id;
         existingOrder.razorpay_order_id = razorpay_order_id;
         await existingOrder.save();
+
+        // Return a success response
+        res.json({ success: true });
+        return;
       }
-      res.redirect(`https://venq.in/success`);
-      return;
     } else {
-      res.redirect("https://venq.in/failedpayment");
+      res
+        .status(400)
+        .json({ success: false, message: "Payment verification failed" });
       return;
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
@@ -190,16 +195,13 @@ app.post("/payment/createTransfer", async (req, res) => {
     const transferOptions = {
       transfers: [
         {
-          account: recipientAccountId, // Use recipientAccountId from the request
-          amount: Math.round(Number(amount) * 86.3), // Ensure the amount is a valid number and converted to paise if needed
+          account: recipientAccountId,
+          amount: Math.round(Number(amount) * 86.3), // Convert amount to paise
           currency: "INR",
           notes: {
             name: notes.name,
             propertyName: notes.propertyName,
           },
-          // Assuming new required parameters
-          purpose: "payout",
-          on_hold: 0, // Assuming a new parameter if the API requires it
         },
       ],
     };
