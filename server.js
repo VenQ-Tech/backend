@@ -14,6 +14,7 @@ const mailRoute = require("./routes/mailRoute");
 
 const purchasedRoute = require("./routes/purchasedRoute");
 const kycRoute = require("./routes/kyc");
+// const documentRoute = require("./routes/documentRouter");
 const { OrderModel } = require("./model/Ordermodels");
 // image haxdling--------------------------------
 const bodyparser = require("body-parser");
@@ -65,6 +66,7 @@ app.use("/phonepe", phonepeRoute);
 app.use("/investment", investmentRoute);
 app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
+// app.use("/document", documentRoute);
 app.use("/blogs", blogsRoute);
 app.use("/sendmail", mailRoute);
 app.use("/kyc", kycRoute);
@@ -173,6 +175,7 @@ app.post("/payment/paymentVerification", async (req, res) => {
         await existingOrder.save();
 
         // Return a success response
+        console.log("payment successfulll");
         res.json({ success: true });
         return;
       }
@@ -196,7 +199,7 @@ app.post("/payment/createTransfer", async (req, res) => {
       transfers: [
         {
           account: recipientAccountId,
-          amount: Math.round(Number(amount) * 86.3), // Convert amount to paise
+          amount: Math.round(Number(amount) * 100), // Convert amount to paise
           currency: "INR",
           notes: {
             name: notes.name,
