@@ -1,5 +1,3 @@
-// module.exports = mongoose.model('user', customerSchema);
-
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
@@ -22,6 +20,14 @@ const customerSchema = new mongoose.Schema({
   isVerified: {
     type: Number,
     default: 0,
+  },
+  pdfUploaded: {
+    type: Boolean,
+    default: false, // Default is false, indicating the PDF has not been uploaded yet
+  },
+  pdfLink: {
+    type: String,
+    default: "", // Default is an empty string, indicating no link yet
   },
 });
 

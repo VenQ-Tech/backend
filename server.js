@@ -11,10 +11,10 @@ const phonepeRoute = require("./routes/phonepeRoute");
 const surepassRoute = require("./routes/surepass");
 const blogsRoute = require("./routes/blogs");
 const mailRoute = require("./routes/mailRoute");
-
+const savePdf = require("./routes/savePdf");
 const purchasedRoute = require("./routes/purchasedRoute");
 const kycRoute = require("./routes/kyc");
-// const documentRoute = require("./routes/documentRouter");
+const documentRoute = require("./routes/documentRouter");
 const { OrderModel } = require("./model/Ordermodels");
 // image haxdling--------------------------------
 const bodyparser = require("body-parser");
@@ -66,9 +66,10 @@ app.use("/phonepe", phonepeRoute);
 app.use("/investment", investmentRoute);
 app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
-// app.use("/document", documentRoute);
+app.use("/document", documentRoute);
 app.use("/blogs", blogsRoute);
 app.use("/sendmail", mailRoute);
+app.use("/savePdf", savePdf);
 app.use("/kyc", kycRoute);
 app.use(express.static("public"));
 app.use("/listing", listingRoute);
@@ -95,7 +96,7 @@ app.post("/api/upload-by-link", async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(link, {
       folder: "upload",
-      allowed_formats: ["jpg", "jpeg", "png", "gif"],
+      allowed_formats: ["jpg", "jpeg", "png", "gif", "pdf"],
     });
     // console.log('heeere---');
     console.log(result);
@@ -131,6 +132,7 @@ app.get("/download/:url", (req, res) => {
   const path = `./public/documents/${url}`;
   res.download(path);
 });
+
 app.post("/payment/checkout", async (req, res) => {
   const { name, amount } = req.body;
   try {
