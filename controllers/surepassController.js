@@ -307,7 +307,7 @@ const getSignedDocument = async (req, res) => {
         });
       } else {
         res.status(200).send({
-          success: false,
+          success: true,
           message: "Signing process is not completed yet.",
           data: result.data,
         });

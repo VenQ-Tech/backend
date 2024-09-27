@@ -16,6 +16,7 @@ const purchasedRoute = require("./routes/purchasedRoute");
 const kycRoute = require("./routes/kyc");
 const documentRoute = require("./routes/documentRouter");
 const { OrderModel } = require("./model/Ordermodels");
+const esigndetails = require("./routes/SurepassDetailsRoute");
 // image haxdling--------------------------------
 const bodyparser = require("body-parser");
 const Razorpay = require("razorpay");
@@ -63,6 +64,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use("/otpless", otplessRoute);
 app.use("/auth", require("./routes/authRouter"));
 app.use("/phonepe", phonepeRoute);
+app.use("/esigndetails", esigndetails);
 app.use("/investment", investmentRoute);
 app.use("/purchased", purchasedRoute);
 app.use("/surepass", surepassRoute);
