@@ -130,6 +130,12 @@ const initialiseesign = async (req, res) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${TOKEN_ID}`,
     };
+    const pageWidth = 595;  // A4 width in points
+    const pageHeight = 842; // A4 height in points
+
+    // Calculate the position based on the percentage
+    const xPosition = 0.2 * pageWidth; // 20% from the left
+    const yPosition = 0.6 * pageHeight;
     const result = await axios.post(
       "https://kyc-api.surepass.io/api/v1/esign/initialize",
       {
@@ -145,16 +151,10 @@ const initialiseesign = async (req, res) => {
           user_email: email,
         },
         positions: {
-          1: [
+          8: [ // Sign on the 8th page
             {
-              x: 10,
-              y: 20,
-            },
-          ],
-          2: [
-            {
-              x: 0,
-              y: 0,
+              x: xPosition,
+              y: yPosition,
             },
           ],
         },
