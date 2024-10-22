@@ -74,7 +74,7 @@ app.use("/sendmail", mailRoute);
 app.use("/savePdf", savePdf);
 app.use("/kyc", kycRoute);
 app.use(express.static("public"));
-app.use("/listing", listingRoute);
+app.use("listings", listingRoute);
 
 // Upload photo from device
 const photosMiddleware = multer({ storage: storage }).array("photos", 100);
