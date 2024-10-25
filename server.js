@@ -31,6 +31,7 @@ require("dotenv").config();
 // -------------------------------
 const PORT = process.env.PORT || 4000;
 const app = express();
+const customers = require('./model/Customer'); // Correct path to your model file
 
 const razorpay = new Razorpay({
   key_id: "rzp_live_gHZIY3vAzSxfGR",
@@ -75,6 +76,23 @@ app.use("/savePdf", savePdf);
 app.use("/kyc", kycRoute);
 app.use(express.static("public"));
 app.use("/listing", listingRoute);
+
+
+app.get('/customers/byEmail', async (req, res) => {
+  const { email } = req.query; // Get the email from query parameters
+
+  try {
+    const customer = await customers.findOne({ email });
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+    res.json(customer);
+  } catch (error) {
+    console.error('Error fetching customer:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // Upload photo from device
 const photosMiddleware = multer({ storage: storage }).array("photos", 100);

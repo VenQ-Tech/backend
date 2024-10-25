@@ -126,63 +126,135 @@ const checkaadharotp = async (req, res) => {
 const initialiseesign = async (req, res) => {
   try {
     const { name, phone, email } = req.body;
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN_ID}`,
-    };
-    const pageWidth = 595;  // A4 width in points
-    const pageHeight = 842; // A4 height in points
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${TOKEN_ID}`);
 
-    // Calculate the position based on the percentage
-    const xPosition = 0.2 * pageWidth; // 20% from the left
-    const yPosition = 0.6 * pageHeight;
-    const result = await axios.post(
-      "https://kyc-api.surepass.io/api/v1/esign/initialize",
-      {
-        pdf_pre_uploaded: true,
-        callback_url: "https://venq.in/",
-        config: {
-          auth_mode: 1,
-          reason: "Contract",
-        },
-        prefill_options: {
-          full_name: name,
-          mobile_number: phone,
-          user_email: email,
-        },
+    // Format the payload as per the template
+    const raw = JSON.stringify({
+      pdf_pre_uploaded: true,
+      callback_url: "https://venq.in/",
+      sign_type: "suresign",
+      config: {
+        auth_mode: 1,
+        reason: "Contract",
         positions: {
-          8: [ // Sign on the 8th page
+          "8": [
             {
-              x: xPosition,
-              y: yPosition,
+              x: 110, // Adjusted x position
+              y: 440, // Adjusted y position
             },
           ],
-        },
+        }
       },
-      { headers: headers }
-    );
-    if (result) {
-      console.log(result.data);
+      prefill_options: {
+        full_name: name,
+        mobile_number: phone,
+        user_email: email
+      }
+    });
+
+    // Make the API call using fetch
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+    };
+
+    const response = await fetch("https://kyc-api.surepass.io/api/v1/esign/initialize", requestOptions);
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log(JSON.stringify(result, null, 2)); // Log the response
       res.status(200).send({
         success: true,
-        data: result.data,
+        data: result,
       });
     } else {
-      console.log("gadbad");
-      console.log(result.data);
+      console.log("Unexpected result:", result);
       res.status(200).send({
         success: false,
-        data: result.data,
+        data: result,
       });
     }
   } catch (error) {
-    console.log(error.response.data);
+    console.error("Error details:", error.message);
     res.status(500).send({
       success: false,
-      error: error,
+      error: error.message || "Internal Server Error",
     });
   }
 };
+
+
+const initialiseesignPROS = async (req, res) => {
+  try {
+    const { name, phone, email } = req.body;
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${TOKEN_ID}`);
+
+    // Format the payload as per the template
+    const raw = JSON.stringify({
+      pdf_pre_uploaded: true,
+      callback_url: "https://venq.in/",
+      sign_type: "suresign",
+      config: {
+        auth_mode: 1,
+        reason: "Contract",
+        positions: {
+          "2": [
+            {
+              x: 350, // Adjusted x position
+              y: 400, // Adjusted y position
+            },
+          ],
+        }
+      },
+      prefill_options: {
+        full_name: name,
+        mobile_number: phone,
+        user_email: email
+      }
+    });
+
+    // Make the API call using fetch
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+    };
+
+    const response = await fetch("https://kyc-api.surepass.io/api/v1/esign/initialize", requestOptions);
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log(JSON.stringify(result, null, 2)); // Log the response
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
+    } else {
+      console.log("Unexpected result:", result);
+      res.status(200).send({
+        success: false,
+        data: result,
+      });
+    }
+  } catch (error) {
+    console.error("Error details:", error.message);
+    res.status(500).send({
+      success: false,
+      error: error.message || "Internal Server Error",
+    });
+  }
+};
+
+
 const uploadPdf = async (req, res) => {
   try {
     const { client_id, link } = req.body;
@@ -385,4 +457,5 @@ module.exports = {
   getpandetails,
   uploadPdf,
   getSignedDocument,
+  initialiseesignPROS
 };
