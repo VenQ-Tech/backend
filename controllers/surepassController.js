@@ -207,7 +207,13 @@ const initialiseesignPROS = async (req, res) => {
           "2": [
             {
               x: 350, // Adjusted x position
-              y: 750, // Adjusted y position
+              y: 720, // Adjusted y position
+            },
+          ],
+          "3": [
+            {
+              x: 380, // Adjusted x position
+              y: 70, // Adjusted y position
             },
           ],
         }
