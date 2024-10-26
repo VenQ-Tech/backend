@@ -15,10 +15,6 @@ const surepassDetailsSchema = new mongoose.Schema(
       type: String,
       default: "", // This field will always be present but can be empty
     },
-    fatherName: {
-      type: String,
-      required: true, // This field must be filled in
-    },
     phoneNumber: {
       type: String,
       required: true, // Phone number field must be provided
