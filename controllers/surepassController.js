@@ -135,7 +135,6 @@ const initialiseesign = async (req, res) => {
     const raw = JSON.stringify({
       pdf_pre_uploaded: true,
       callback_url: "https://venq.in/",
-      sign_type: "suresign",
       config: {
         auth_mode: 1,
         reason: "Contract",
@@ -201,7 +200,6 @@ const initialiseesignPROS = async (req, res) => {
     const raw = JSON.stringify({
       pdf_pre_uploaded: true,
       callback_url: "https://venq.in/",
-      sign_type: "suresign",
       config: {
         auth_mode: 1,
         reason: "Contract",
@@ -209,7 +207,7 @@ const initialiseesignPROS = async (req, res) => {
           "2": [
             {
               x: 350, // Adjusted x position
-              y: 400, // Adjusted y position
+              y: 750, // Adjusted y position
             },
           ],
         }

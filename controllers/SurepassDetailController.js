@@ -32,7 +32,6 @@ const addSurepassDetails = async (req, res) => {
         clientId1,
         clientId2,
         pdfUrl,
-        fatherName,
         phoneNumber,
         email,
       });
