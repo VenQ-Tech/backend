@@ -126,7 +126,7 @@ const checkaadharotp = async (req, res) => {
 const initialiseesign = async (req, res) => {
   try {
     const { name, phone, email } = req.body;
-    
+
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${TOKEN_ID}`);
@@ -139,19 +139,19 @@ const initialiseesign = async (req, res) => {
         auth_mode: 1,
         reason: "Contract",
         positions: {
-          "8": [
+          8: [
             {
               x: 110, // Adjusted x position
               y: 440, // Adjusted y position
             },
           ],
-        }
+        },
       },
       prefill_options: {
         full_name: name,
         mobile_number: phone,
-        user_email: email
-      }
+        user_email: email,
+      },
     });
 
     // Make the API call using fetch
@@ -159,27 +159,30 @@ const initialiseesign = async (req, res) => {
       method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: "follow"
+      redirect: "follow",
     };
 
-    const response = await fetch("https://kyc-api.surepass.io/api/v1/esign/initialize", requestOptions);
+    const response = await fetch(
+      "https://kyc-api.surepass.io/api/v1/esign/initialize",
+      requestOptions
+    );
     const result = await response.json();
 
     if (response.ok) {
-      console.log(JSON.stringify(result, null, 2)); // Log the response
+      // Update esign1Status in the database after successful signing
+      await Investor.findByIdAndUpdate(userId, { esign1Status: true });
+
       res.status(200).send({
         success: true,
         data: result,
       });
     } else {
-      console.log("Unexpected result:", result);
       res.status(200).send({
         success: false,
         data: result,
       });
     }
   } catch (error) {
-    console.error("Error details:", error.message);
     res.status(500).send({
       success: false,
       error: error.message || "Internal Server Error",
@@ -187,11 +190,10 @@ const initialiseesign = async (req, res) => {
   }
 };
 
-
 const initialiseesignPROS = async (req, res) => {
   try {
     const { name, phone, email } = req.body;
-    
+
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${TOKEN_ID}`);
@@ -204,19 +206,25 @@ const initialiseesignPROS = async (req, res) => {
         auth_mode: 1,
         reason: "Contract",
         positions: {
-          "2": [
+          2: [
             {
               x: 350, // Adjusted x position
-              y: 750, // Adjusted y position
+              y: 720, // Adjusted y position
             },
           ],
-        }
+          3: [
+            {
+              x: 380, // Adjusted x position
+              y: 70, // Adjusted y position
+            },
+          ],
+        },
       },
       prefill_options: {
         full_name: name,
         mobile_number: phone,
-        user_email: email
-      }
+        user_email: email,
+      },
     });
 
     // Make the API call using fetch
@@ -224,34 +232,36 @@ const initialiseesignPROS = async (req, res) => {
       method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: "follow"
+      redirect: "follow",
     };
 
-    const response = await fetch("https://kyc-api.surepass.io/api/v1/esign/initialize", requestOptions);
+    const response = await fetch(
+      "https://kyc-api.surepass.io/api/v1/esign/initialize",
+      requestOptions
+    );
     const result = await response.json();
 
     if (response.ok) {
-      console.log(JSON.stringify(result, null, 2)); // Log the response
+      // Update esign2Status in the database after successful signing
+      await Investor.findByIdAndUpdate(userId, { esign2Status: true });
+
       res.status(200).send({
         success: true,
         data: result,
       });
     } else {
-      console.log("Unexpected result:", result);
       res.status(200).send({
         success: false,
         data: result,
       });
     }
   } catch (error) {
-    console.error("Error details:", error.message);
     res.status(500).send({
       success: false,
       error: error.message || "Internal Server Error",
     });
   }
 };
-
 
 const uploadPdf = async (req, res) => {
   try {
@@ -297,6 +307,7 @@ const uploadPdf = async (req, res) => {
     });
   }
 };
+
 const getUploadlink = async (req, res) => {
   try {
     const headers = {
@@ -455,5 +466,5 @@ module.exports = {
   getpandetails,
   uploadPdf,
   getSignedDocument,
-  initialiseesignPROS
+  initialiseesignPROS,
 };
