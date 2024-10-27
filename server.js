@@ -28,6 +28,7 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const Purchased = require("./model/Purchased");
 require("dotenv").config();
+const CheckboxData = require('./model/CheckboxData');
 // -------------------------------
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -242,6 +243,57 @@ app.post("/payment/createTransfer", async (req, res) => {
     res.status(500).json({ error: "Failed to create transfer" });
   }
 });
+
+app.post('/checkboxes', async (req, res) => {
+  try {
+    const { userId, selections } = req.body;
+
+    // Check if the checkbox data already exists for this user
+    const existingCheckboxData = await CheckboxData.findOne({ userId });
+
+    if (existingCheckboxData) {
+      // If data exists, update it
+      existingCheckboxData.selections = selections; // Assuming selections is an object
+      await existingCheckboxData.save();
+      return res.status(200).json({ message: 'Checkbox selections updated successfully', data: existingCheckboxData });
+    } else {
+      // If data does not exist, create a new instance
+      const newCheckboxData = new CheckboxData({
+        userId,
+        selections,
+      });
+
+      // Save the checkbox data to the database
+      await newCheckboxData.save();
+      return res.status(201).json({ message: 'Checkbox selections saved successfully', data: newCheckboxData });
+    }
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
+
+app.post('/purchased/update-status', async (req, res) => {
+  const { id, statusType, status } = req.body;
+
+  try {
+    // Update the purchase status based on the type
+    const update = {};
+    if (statusType === "surepassStatus") {
+      update.surepassStatus = status;
+    } else if (statusType === "surepassProsStatus") {
+      update.surepassProsStatus = status;
+    }
+
+    // Update the purchase in MongoDB
+    await Purchased.updateOne({ _id: id }, { $set: update });
+
+    res.status(200).json({ message: "Purchase status updated successfully." });
+  } catch (error) {
+    console.error("Error updating purchase status:", error);
+    res.status(500).json({ message: "Error updating purchase status." });
+  }
+});
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 mongoose.connection.on("error", (err) => {

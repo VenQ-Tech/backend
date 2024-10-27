@@ -68,4 +68,20 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { surepassStatus, surepassProsStatus } = req.body;
+
+  try {
+    const updatedPurchase = await Purchased.findByIdAndUpdate(
+      id,
+      { surepassStatus, surepassProsStatus },
+      { new: true }
+    );
+    res.status(200).json(updatedPurchase);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating purchase status", error });
+  }
+});
+
 module.exports = router;

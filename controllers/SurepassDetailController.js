@@ -3,7 +3,7 @@ const SurepassDetails = require("../model/Surepassdetails"); // Adjust the path 
 // Controller to add Surepass details
 const addSurepassDetails = async (req, res) => {
   try {
-    const { clientId1, clientId2, pdfUrl, fatherName, phoneNumber, email } =
+    const { clientId1, clientId2, pdfUrl, phoneNumber, email } =
       req.body;
 
     // Find the existing record by email
@@ -14,7 +14,6 @@ const addSurepassDetails = async (req, res) => {
       existingRecord.clientId1 = clientId1;
       existingRecord.clientId2 = clientId2;
       existingRecord.pdfUrl = pdfUrl;
-      existingRecord.fatherName = fatherName;
       existingRecord.phoneNumber = phoneNumber;
 
       // Save the updated record
