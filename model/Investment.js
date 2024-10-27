@@ -3,38 +3,37 @@ const mongoose = require('mongoose');
 const InvestmentSchema = new mongoose.Schema({
   type: {
     type: Number,
-    required:true,
+    required: true,
   },
   name: {
     type: String,
     trim: true,
-    required:true,
-    },
-    email:{
-        type:String,
-        required:true,
-        
-    },
-    phone:{
-    type:String,
-    required:true
+    required: true,
   },
-    property:{
-    type:String,
-    required:true
+  email: {
+    type: String,
+    required: true,
   },
-  image:{
-    type:String,
-    required:true
+  phone: {
+    type: String,
+    required: true,
   },
-  amount:{
-    type:Number,
-    required:true
+  property: {
+    type: String,
+    required: true,
   },
-  isCompleted :{
+  image: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  isCompleted: {
     type: Boolean,
-    default: false
- },
+    default: false,
+  },
 });
 
-module.exports = mongoose.model('investement', InvestmentSchema);
+module.exports = mongoose.model('Investment', InvestmentSchema);
