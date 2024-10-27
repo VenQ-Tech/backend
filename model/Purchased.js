@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const PurchasedSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer", // Reference to the Customer model
+    ref: "Customer",
   },
   propertyName: {
     type: String,
@@ -14,6 +14,16 @@ const PurchasedSchema = new mongoose.Schema({
   },
   quantity: {
     type: Number,
+  },
+  surepassStatus: {
+    type: String,
+    enum: ["Completed", "Not Completed"],
+    default: "Not Completed",
+  },
+  surepassProsStatus: {
+    type: String,
+    enum: ["Completed", "Not Completed"],
+    default: "Not Completed",
   },
 });
 
