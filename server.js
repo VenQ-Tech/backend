@@ -272,7 +272,7 @@ app.post('/checkboxes', async (req, res) => {
   }
 });
 
-app.post('/purchased/update-status', async (req, res) => {
+app.put('/purchased/update-status', async (req, res) => {
   const { id, statusType, status } = req.body;
 
   try {

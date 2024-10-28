@@ -37,6 +37,25 @@ router.post("/:customerId", async (req, res) => {
     res.status(500).json({ error: "Failed to add investment" });
   }
 });
+
+router.put("/update-status", async (req, res) => {
+  const { id, statusType, status } = req.body;
+
+  try {
+    const purchased = await Purchased.findById(id);
+    if (!purchased) {
+      return res.status(404).json({ message: "Investor not found" });
+    }
+    
+    purchased[statusType] = status;
+    await purchased.save();
+    res.status(200).json({ message: "Status updated successfully" });
+  } catch (error) {
+    console.error("Error updating status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.get("/:customerId/getDetails", async (req, res) => {
   const customerId = req.params.customerId;
 
