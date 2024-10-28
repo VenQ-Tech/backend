@@ -143,8 +143,6 @@ const initialiseesign = async (req, res) => {
     );
 
     if (response.status === 200) {
-      // Update esign1Status in the database after successful signing
-      await Investor.findByIdAndUpdate(req.body.userId, { esign1Status: true });
       res.status(200).send({
         success: true,
         data: response.data,
@@ -200,8 +198,6 @@ const initialiseesignPROS = async (req, res) => {
     );
 
     if (response.status === 200) {
-      // Update esign2Status in the database after successful signing
-      await Investor.findByIdAndUpdate(req.body.userId, { esign2Status: true });
       res.status(200).send({
         success: true,
         data: response.data,
