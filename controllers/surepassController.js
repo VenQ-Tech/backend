@@ -310,17 +310,41 @@ const getSignedDocument = async (req, res) => {
       Authorization: `Bearer ${TOKEN_ID}`,
     };
 
+    console.log("Request Parameters:", req.params);
+    console.log("Using Client ID:", client_id);
+
     const url = `https://kyc-api.surepass.io/api/v1/esign/get-signed-document/${encodeURIComponent(client_id)}`;
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: url,
+      headers: headers,
+    };
 
-    const result = await axios.get(url, { headers });
+    const result = await axios(config);
 
-    if (result.data) {
+    console.log("API Response Status:", result.status);
+    console.log("API Response Data:", result.data);
+
+    if (result && result.data) {
+      // Handle when the status is "completed"
       if (result.data.status === "completed") {
         res.status(200).send({
           success: true,
+          message: "Signing process completed successfully.",
           data: result.data,
         });
-      } else {
+      } 
+      // Handle when the signing process is not complete but a URL is available
+      else if (result.data.data && result.data.data.url) {
+        res.status(200).send({
+          success: true,
+          message: "Signing process is not completed yet, but download URL is available.",
+          data: result.data,
+        });
+      } 
+      // Handle when signing is incomplete, and no URL is available
+      else {
         res.status(200).send({
           success: true,
           message: "Signing process is not completed yet.",
@@ -328,13 +352,18 @@ const getSignedDocument = async (req, res) => {
         });
       }
     } else {
-      res.status(400).send({
+      console.log("Unexpected response format or empty data");
+      res.status(500).send({
         success: false,
-        message: "Invalid data received",
+        message: "Unexpected response format or empty data",
+        data: result.data,
       });
     }
   } catch (error) {
-    console.error("Error in getSignedDocument:", error.message);
+    console.log(
+      "Error Response:",
+      error.response ? error.response.data : error.message
+    );
     res.status(500).send({
       success: false,
       error: error.response ? error.response.data : error.message,
