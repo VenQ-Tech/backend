@@ -126,7 +126,7 @@ const initialiseesign = async (req, res) => {
         auth_mode: 1,
         reason: "Contract",
         positions: {
-          8: [{ x: 110, y: 440 }],
+          '8': [{ x: 110, y: 440 }],
         },
       },
       prefill_options: {
@@ -180,8 +180,8 @@ const initialiseesignPROS = async (req, res) => {
         auth_mode: 1,
         reason: "Contract",
         positions: {
-          2: [{ x: 350, y: 720 }],
-          3: [{ x: 380, y: 70 }],
+          '2': [{ x: 350, y: 720 }],  // Updated positions for PROS
+          '3': [{ x: 380, y: 70 }],
         },
       },
       prefill_options: {
@@ -205,7 +205,7 @@ const initialiseesignPROS = async (req, res) => {
     } else {
       res.status(400).send({
         success: false,
-        message: "Failed to initialize e-sign for PROS",
+        message: "Failed to initialize e-sign",
         data: response.data,
       });
     }
@@ -217,6 +217,7 @@ const initialiseesignPROS = async (req, res) => {
     });
   }
 };
+
 
 // Upload PDF
 const uploadPdf = async (req, res) => {
